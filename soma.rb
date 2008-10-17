@@ -16,6 +16,7 @@ class Soma
     loop do
       while (line = @file.readlines) && !line.empty?
         line.each {|l| Readline::HISTORY.push(l.strip) }
+        File.open(@file.path, 'r') {|f| p f.inspect}
         IRB::Irb.new(nil, @file.path).eval_input
         erase_and_open_buffer
       end
