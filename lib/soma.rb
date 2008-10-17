@@ -20,7 +20,6 @@ class Soma
         line.each {|l| Readline::HISTORY.push(l.strip) }
         irb = IRB.CurrentContext.irb
         stdin_context = irb.context
-        puts `cat #{@file.path}`
         irb.context = IRB::Context.new(irb, stdin_context.workspace, @file.path)
         irb.eval_input
         irb.context = stdin_context
