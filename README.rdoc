@@ -1,4 +1,4 @@
-= SOMAREPL
+= Soma
 A shot at implementing a REPL-like feature for vim (and everything else able to write to text files). 
 
 == Use It!
