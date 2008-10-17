@@ -5,7 +5,7 @@ A shot at implementing a REPL-like feature for vim (and everything else able to 
 Add the following to your <tt>~/.irbrc</tt>:
 
   require 'soma'
-  Soma.new.start
+  Soma.start
 
 When you start IRB Soma will listen on a file named <tt>/tmp/username_somarepl_buffer</tt> and execute everything added there in your IRB session.
 
