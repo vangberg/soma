@@ -1,0 +1,17 @@
+# SOMAREPL
+A shot at implementing a REPL-like feature for vim.
+
+## Use It!
+Add the following to your +~/.irbrc+:
+
+  require 'soma'
+  Soma.new.start
+
+When you start IRB Soma will listen on a file named +/tmp/username_somarepl_bugger+ and execute everything written there in your IRB session.
+
+Copy +vim/soma.vim+ to +~/.vim/plugin/+. The default mapping is +Ctrl-c Ctrl-c+, which sends the current paragraph to IRB unless you do a visual selection.
+
+## Quirks & Annoyances
+
+* Commands are added to IRB history, but you have to go one item back in your history or invoke some command before it's updated.
+* It's very hacky and dirty. It Just Works (tm)

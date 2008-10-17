@@ -1,7 +1,5 @@
 require 'tmpdir'
 
-# Add Soma.new.start to your ~/.irbrc
-
 class Soma
   def start
     Thread.start { tail }

@@ -4,3 +4,4 @@ function ToSomaBuffer(text)
 endfunction
   
 vmap <C-c><C-c> "ry :call ToSomaBuffer(@r)<CR>
+nmap <C-c><C-c> vip<C-c><C-c>
