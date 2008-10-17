@@ -1,5 +1,9 @@
 require 'tmpdir'
 
+class IRB::Irb
+  attr_writer :context
+end
+
 class Soma
   def start
     Thread.start { tail }
@@ -14,8 +18,12 @@ class Soma
     loop do
       while (line = @file.readlines) && !line.empty?
         line.each {|l| Readline::HISTORY.push(l.strip) }
-        File.open(@file.path, 'r') {|f| p f.inspect}
-        IRB::Irb.new(nil, @file.path).eval_input
+        irb = IRB.CurrentContext.irb
+        stdin_context = irb.context
+        puts `cat #{@file.path}`
+        irb.context = IRB::Context.new(irb, stdin_context.workspace, @file.path)
+        irb.eval_input
+        irb.context = stdin_context
         erase_and_open_buffer
       end
       sleep 0.2
