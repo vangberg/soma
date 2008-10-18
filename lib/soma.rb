@@ -1,36 +1,40 @@
+$:.unshift(File.join(File.dirname(__FILE__)))
 require 'tmpdir'
+require 'socket'
+require 'soma/input_method'
 
 class IRB::Irb
   attr_writer :context
 end
 
-module Soma
-  extend self
-  def start
-    @thread || @thread = Thread.start { tail }
+class Soma
+  def self.start(port=42000)
+    if @soma
+      puts "Soma already running.."
+    else
+      @some = new(port)
+    end
   end
 
-  def erase_and_open_buffer
-    @file = File.open(File.join(Dir::tmpdir, "#{`whoami`.strip}_somarepl_buffer"), 'w+')
+  def initialize(port)
+    @irb = IRB.CurrentContext.irb
+    @stdin_context = @irb.context
+    @context = IRB::Context.new(@irb, @stdin_context.workspace, IRB::SomaInputMethod.new)
+
+    @server = TCPServer.new('localhost', port)
+    @thread = Thread.start { listen }
   end
 
-  def tail
-    erase_and_open_buffer
-    loop do
-      while (line = @file.readlines) && !line.empty?
-        line.each {|l| Readline::HISTORY.push(l.strip) }
-        # Get the current IRB
-        irb = IRB.CurrentContext.irb
-        # We save the IRB context that takes STDIN as input
-        stdin_context = irb.context
-        # .. replace it with a context that takes our buffer file as input
-        irb.context = IRB::Context.new(irb, stdin_context.workspace, @file.path)
-        irb.eval_input
-        # and finally puts back the STDIN context so control is handled back to the IRB session again
-        irb.context = stdin_context
-        erase_and_open_buffer
+  def listen
+    while socket = @server.accept
+      while lines = socket.gets("EOF\r\n").split("\r\n")
+        lines.pop
+        @context.io.puts lines
+        @irb.context = @context
+        @irb.eval_input
+        @irb.context = @stdin_context
+        print IRB.conf[:PROMPT][IRB.conf[:PROMPT_MODE]][:PROMPT_N]
       end
-      sleep 0.2
     end
   end
 end
