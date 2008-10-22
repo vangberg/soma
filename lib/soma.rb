@@ -3,6 +3,8 @@ require 'tmpdir'
 require 'socket'
 require 'soma/input_method'
 
+Thread.abort_on_exception = true
+
 class IRB::Irb
   attr_writer :context
 end
