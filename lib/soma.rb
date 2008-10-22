@@ -1,5 +1,7 @@
 require 'tmpdir'
 
+Thread.abort_on_exception = true
+
 class IRB::Irb
   attr_writer :context
 end
