@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "soma"
   s.version  = "0.0.1"
-  s.date     = "2008-10-17"
+  s.date     = "2008-11-15"
   s.summary  = "Send Ruby to IRB from _teh outside_!"
   s.email    = "ichverstehe@gmail.com"
   s.homepage = "http://github.com/ichverstehe/soma"
